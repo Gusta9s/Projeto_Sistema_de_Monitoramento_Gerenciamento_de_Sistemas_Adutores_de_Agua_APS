@@ -10,7 +10,7 @@ class config():
 class Dev(config):
     DEBUG = True
     IP_HOST = 'localhost'
-    PORT_HOST = 8000
+    PORT_HOST = 8080
     URL_MAIN = 'http://%s/%s' % (IP_HOST, PORT_HOST) # Este cara forma o endpoint inicial completo
 
 class Prod(config):

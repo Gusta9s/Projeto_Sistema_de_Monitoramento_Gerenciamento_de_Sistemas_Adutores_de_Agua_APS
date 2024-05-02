@@ -9,6 +9,6 @@ class HomeView(AdminIndexView):
 
     @expose('/')
     def index(self):
-        return self.render('exec.html')
+        return self.render('home.html')
     
     

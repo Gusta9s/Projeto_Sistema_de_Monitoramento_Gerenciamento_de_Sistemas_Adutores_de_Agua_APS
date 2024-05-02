@@ -4,5 +4,5 @@ from admin.Views import HomeView
 
 def start_views(app):
     admin = Admin(app, name='Dashboard', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
-
+    admin.add_link(MenuLink(name='Logout', url='/logout'))
     

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            background-color: #1f1f1f;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .block {
+            width: calc(47% - 10px);
+            background-color: #262626;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .logs {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .alert-icon {
+            display: flex;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="container">
+        <article class="block">
+            <h2>Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de Adutores</h2>
+            <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
+            <p>Sendo o primeiro deles, uma área específica para exibição de alertas em casos de vazamento de água em tempo
+                real. O segundo entre eles, seria para coleta em tempo real das decisões tomadas pelo machine learning, informando se existe vazamento ou
+                não. E o último seria para uma coleta de dados em tempo real dos dados brutos adquiridos diretamente dos
+                sensores de pressão da água e velocidade da água (Dados brutos do LoRa). </p>
+        </article>
+        <article class="block" id="alert_block">
+            <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
+            <div class="alert-icon hidden" id="alert_icon">
+                <img src="{{ url_for('static', filename='img/alerta.png') }}" alt="Logo de alerta de vazamentos no adutor">
+            </div>
+        </article>
+        <article class="block" id="ml_block">
+            <h2>Dados Tratados pelo Machine Learning</h2>
+            <p>Existe vazamento no adutor de água: <span id="last_data">-</span></p>
+            <div class="logs" id="ml_logs">-</div>
+        </article>
+        <article class="block" id="lora_block">
+            <h2>Logs de Dados Brutos do LoRa:</h2>
+            <div class="logs" id="lora_logs">-</div>
+        </article>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"
+        integrity="sha384-ta4+X2Bsmj/ZfZdo7CX7b22r4Crp0Hq06twBf9t6C4HixPt5yBLyiDpAYBY2HXO5"
+        crossorigin="anonymous"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('update_ml_logs', function (data) {
+            var logDiv = document.createElement('div');
+            logDiv.innerText = data;
+            document.getElementById('ml_logs').appendChild(logDiv);
+        });
+
+        socket.on('update_lora_logs', function (data) {
+            var logDiv = document.createElement('div');
+            logDiv.innerText = data;
+            document.getElementById('lora_logs').appendChild(logDiv);
+        });
+
+        socket.on('update_alert', function (alert) {
+            var alertIcon = document.getElementById('alert_icon');
+            if (alert) {
+                alertIcon.classList.remove('hidden');
+            } else {
+                alertIcon.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

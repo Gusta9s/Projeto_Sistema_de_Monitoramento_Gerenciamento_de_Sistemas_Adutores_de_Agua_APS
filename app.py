@@ -1,14 +1,12 @@
-from flask import Flask
-from admin.Admin import start_views
-from flask_bootstrap import Bootstrap
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+
+app = Flask(__name__)
+socketio = SocketIO(app)
 
 def create_app(config):
-    app = Flask(__name__)
     app.config.from_object(config)
     app.config.from_pyfile('config.py')
-    app.config['FLASK_ADMIN_SWATCH'] = 'paper'
-    start_views(app)
-    Bootstrap(app)
     config.APP = app
 
     @app.after_request
@@ -20,4 +18,24 @@ def create_app(config):
 
     @app.route('/')
     def index():
-        return 'Hello Word'
+        return render_template('home.html')
+    
+    @app.route('/dashboard')
+    def dashboard_view():
+        return render_template('painel.html')
+    
+    @socketio.on('update_header')
+    def update_header(data):
+        emit('update_header', data, broadcast=True)
+
+    @socketio.on('update_lora_logs')
+    def update_lora_logs(data):
+        emit('update_lora_logs', data, broadcast=True)
+
+    @socketio.on('update_ml_logs')
+    def update_ml_logs(data):
+        emit('update_ml_logs', data, broadcast=True)
+
+    @socketio.on('update_alert')
+    def update_alert(alert):
+        emit('update_alert', alert, broadcast=True)
