@@ -34,6 +34,12 @@
             margin-top: 0;
         }
 
+        li {
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+        }
+
         .logs {
             max-height: 200px;
             overflow-y: auto;
@@ -54,15 +60,18 @@
         <article class="block">
             <h2>Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de Adutores</h2>
             <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
-            <p>Sendo o primeiro deles, uma área específica para exibição de alertas em casos de vazamento de água em tempo
-                real. O segundo entre eles, seria para coleta em tempo real das decisões tomadas pelo machine learning, informando se existe vazamento ou
+            <p>Sendo o primeiro deles, uma área específica para exibição de alertas em casos de vazamento de água em
+                tempo
+                real. O segundo entre eles, seria para coleta em tempo real das decisões tomadas pelo machine learning,
+                informando se existe vazamento ou
                 não. E o último seria para uma coleta de dados em tempo real dos dados brutos adquiridos diretamente dos
                 sensores de pressão da água e velocidade da água (Dados brutos do LoRa). </p>
         </article>
         <article class="block" id="alert_block">
             <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
             <div class="alert-icon hidden" id="alert_icon">
-                <img src="{{ url_for('static', filename='img/alerta.png') }}" alt="Logo de alerta de vazamentos no adutor">
+                <img src="{{ url_for('static', filename='img/alerta.png') }}"
+                    alt="Logo de alerta de vazamentos no adutor">
             </div>
         </article>
         <article class="block" id="ml_block">
@@ -72,37 +81,57 @@
         </article>
         <article class="block" id="lora_block">
             <h2>Logs de Dados Brutos do LoRa:</h2>
-            <div class="logs" id="lora_logs">-</div>
+            <div class="logs">
+                <ul id="logs_direct"></ul>
+            </div>
         </article>
     </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"
-        integrity="sha384-ta4+X2Bsmj/ZfZdo7CX7b22r4Crp0Hq06twBf9t6C4HixPt5yBLyiDpAYBY2HXO5"
-        crossorigin="anonymous"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 
-        socket.on('update_ml_logs', function (data) {
-            var logDiv = document.createElement('div');
-            logDiv.innerText = data;
-            document.getElementById('ml_logs').appendChild(logDiv);
+        <script type="text/javascript">
+            var socket = io()
+            
+            // client-side
+            socket.on("connect", () => {
+                console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+            });
+
+            socket.on("disconnect", () => {
+                console.log(socket.id); // undefined
+            });
+
+            socket.on("connect", () => {
+                console.log(socket.connected); // true
+            });
+
+            socket.on("disconnect", () => {
+                console.log(socket.connected); // false
+            });
+
+            socket.on('update_ml_logs', function (data) {
+                var logDiv = document.createElement('div');
+                logDiv.innerText = data;
+                document.getElementById('ml_logs').appendChild(logDiv);
+            });
+
+            socket.on('lora_logs', function(data) {
+            var logs_direct = document.getElementById('logs_direct');
+            var lora_logs = document.createElement('li');
+            lora_logs.textContent = data['lora_logs'];
+            logs_direct.appendChild(lora_logs);
         });
 
-        socket.on('update_lora_logs', function (data) {
-            var logDiv = document.createElement('div');
-            logDiv.innerText = data;
-            document.getElementById('lora_logs').appendChild(logDiv);
-        });
-
-        socket.on('update_alert', function (alert) {
-            var alertIcon = document.getElementById('alert_icon');
-            if (alert) {
-                alertIcon.classList.remove('hidden');
-            } else {
-                alertIcon.classList.add('hidden');
-            }
-        });
-    </script>
+            socket.on('update_alert', function (alert) {
+                var alertIcon = document.getElementById('alert_icon');
+                if (alert) {
+                    alertIcon.classList.remove('hidden');
+                } else {
+                    alertIcon.classList.add('hidden');
+                }
+            });
+        </script>
 </body>
 
 </html>

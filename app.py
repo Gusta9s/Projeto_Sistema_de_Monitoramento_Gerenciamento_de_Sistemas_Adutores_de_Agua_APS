@@ -24,13 +24,18 @@ def create_app(config):
     def dashboard_view():
         return render_template('painel.html')
     
-    @socketio.on('update_header')
-    def update_header(data):
-        emit('update_header', data, broadcast=True)
+    @socketio.on('connect')
+    def handle_connect():
+        print('Client connected')
 
-    @socketio.on('update_lora_logs')
-    def update_lora_logs(data):
-        emit('update_lora_logs', data, broadcast=True)
+    @socketio.on('disconnect')
+    def handle_disconnect():
+        print('Client disconnected')
+
+    @socketio.on('lora_logs')
+    def lora_logs(data):
+        lora_logs = data['lora_logs']
+        socketio.emit('lora_logs', {'lora_logs': lora_logs})
 
     @socketio.on('update_ml_logs')
     def update_ml_logs(data):
