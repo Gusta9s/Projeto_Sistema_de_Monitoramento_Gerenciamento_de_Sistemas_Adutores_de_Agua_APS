@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
+from GetLora import realiza_leitura_encaminha
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -22,7 +23,20 @@ def create_app(config):
     
     @app.route('/dashboard')
     def dashboard_view():
-        return render_template('painel.html')
+        dados = realiza_leitura_encaminha()
+        array_dados = dados.values.tolist()
+        return render_template('painel.html', dados=array_dados)
+    
+    @app.get('/dashboard/dados')
+    def dados(): 
+        page = request.args.get('page', default=1, type=int)
+        numeros_por_pagina = 3
+        start_indice = (page - 1) * numeros_por_pagina
+        indice_final = start_indice + numeros_por_pagina
+        dados = realiza_leitura_encaminha()
+        array_dados = dados.values.tolist()
+        arrayPaginado = array_dados[start_indice : indice_final]
+        return jsonify({'dados' : arrayPaginado})
     
     @socketio.on('connect')
     def handle_connect():

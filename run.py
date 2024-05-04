@@ -1,6 +1,5 @@
 from config import app_config, app_active
 from app import create_app, app, socketio
-from getLora import connection_sio
 
 config = app_config[app_active]
 

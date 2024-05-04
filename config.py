@@ -12,7 +12,7 @@ class Dev(config):
     IP_HOST = 'localhost'
     PORT_HOST = 8080
     DASHBOARD = 'dashboard'
-    URL_MAIN = 'http://%s/%s/%s' % (IP_HOST, PORT_HOST, DASHBOARD) # Este cara forma o endpoint inicial completo
+    URL_MAIN = 'http://%s/%s' % (IP_HOST, PORT_HOST) # Este cara forma o endpoint inicial completo
 
 class Prod(config):
     DEBUG = False
@@ -20,7 +20,7 @@ class Prod(config):
     IP_HOST = '192.0.5.3'
     PORT_HOST = 8080
     DASHBOARD = 'dashboard'
-    URL_MAIN = 'http://%s/%s/%s' % (IP_HOST, PORT_HOST, DASHBOARD) # Este cara forma o endpoint inicial completo
+    URL_MAIN = 'http://%s/%s' % (IP_HOST, PORT_HOST) # Este cara forma o endpoint inicial completo
 
 app_config = {
     'dev' : Dev(),
