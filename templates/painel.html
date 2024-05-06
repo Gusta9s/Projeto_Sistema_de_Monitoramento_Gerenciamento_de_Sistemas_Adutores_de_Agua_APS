@@ -1,235 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Dashboard</title>
     <style>
         body {
-            background-color: #1f1f1f;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+          background-color: #1f1f1f;
+          color: #fff;
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
         }
 
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding: 20px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          padding: 20px;
         }
 
         .block {
-            width: calc(47% - 10px);
-            background-color: #262626;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-            padding: 20px;
+          width: calc(47% - 10px);
+          background-color: #262626;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+          margin-bottom: 20px;
+          padding: 20px;
         }
 
         h2 {
-            margin-top: 0;
+          margin-top: 0;
         }
 
         .logs {
-            max-height: 200px;
-            overflow-y: auto;
+          max-height: 200px;
+          overflow-y: auto;
         }
 
         .dark-table {
-            background-color: #262626;
-            color: #fff;
-            font-family: Arial, sans-serif;
+          background-color: #262626;
+          color: #fff;
+          font-family: Arial, sans-serif;
         }
 
         .dark-table th,
         .dark-table td {
-            padding: 8px;
+          padding: 8px;
         }
 
         .dark-table th {
-            text-align: left;
+          text-align: left;
         }
 
         .alert-icon {
-            display: flex;
+          display: flex;
         }
 
         .hidden {
-            display: none;
+          display: none;
         }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <section class="container">
-        <article class="block">
-            <h2>Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de Adutores</h2>
-            <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
-            <p>Sendo o primeiro deles, uma área específica para exibição de alertas em casos de vazamento de água em
-                tempo
-                real. O segundo entre eles, seria para coleta em tempo real das decisões tomadas pelo machine learning,
-                informando se existe vazamento ou
-                não. E o último seria para uma coleta de dados em tempo real dos dados brutos adquiridos diretamente dos
-                sensores de pressão da água e velocidade da água (Dados brutos do LoRa). </p>
-        </article>
-        <article class="block" id="alert_block">
-            <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
-            <div class="alert-icon hidden" id="alert_icon">
-                <img src="{{ url_for('static', filename='img/alerta.png') }}"
-                    alt="Logo de alerta de vazamentos no adutor">
-            </div>
-        </article>
-        <article class="block" id="ml_block">
-            <h2>Dados Tratados pelo Machine Learning</h2>
-            <p>Existe vazamento no adutor de água: <span id="last_data">-</span></p>
-            <div class="logs" id="ml_logs">-</div>
-        </article>
-        <article class="block" id="lora_block">
-            <h2>Logs de Dados Brutos do LoRa:</h2>
-            <div class="logs" id="lista_itens">
-                <table class="dark-table">
-                    <thead>
-                        <tr>
-                            <th>Index(Indice)</th>
-                            <th>Value(Valor)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for dado in dados %}
-                        <tr>
-                            <td>{{ dado[0] }}</td>
-                            <td>{{ dado[1] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div id="lista_itens">
-
-            </div>
-        </article>
+      <article class="block">
+        <h2>
+          Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de
+          Adutores
+        </h2>
+        <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
+        <p>
+          Sendo o primeiro deles, uma área específica para exibição de alertas
+          em casos de vazamento de água em tempo real. O segundo entre eles,
+          seria para coleta em tempo real das decisões tomadas pelo machine
+          learning, informando se existe vazamento ou não. E o último seria para
+          uma coleta de dados em tempo real dos dados brutos adquiridos
+          diretamente dos sensores de pressão da água e velocidade da água
+          (Dados brutos do LoRa).
+        </p>
+      </article>
+      <article class="block" id="alert_block">
+        <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
+        <div class="alert-icon hidden" id="alert_icon">
+          <img src="{{ url_for('static', filename='img/alerta.png') }}"
+            alt="Logo de alerta de vazamentos no adutor" />
+        </div>
+      </article>
+      <article class="block" id="ml_block">
+        <h2>Dados Tratados pelo Machine Learning</h2>
+        <p>Existe vazamento no adutor de água: <span id="last_data">-</span></p>
+        <div class="logs" id="ml_logs">-</div>
+      </article>  
+      <article class="block" id="lora_block">
+        <h2>Logs de Dados Brutos do LoRa:</h2>
+        <div class="logs" id="lista_itens">
+          <table class="dark-table">
+            <thead>
+              <tr>
+                <th>Index(Indice)</th>
+                <th>Value(Valor)</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div id="lista_itens"></div>
+      </article>
     </section>
 
     <script>
-        /**$(document).ready(() => {
-            var pagina_atual = 1;
-            var itens_por_pagina = 1;
+        $(document).ready(() => {
+          var dados = [
+              {% for dado in dados %}
+                  ["{{ dado[0] }}", "{{ dado[1] }}"],
+            {% endfor %}
+          ];
 
-            function atualizarLista(page) {
-                fetch('/dashboard/dados?page=' + page)
-                    .then(response => response.json())
-                    .then(response => {
-                        const data = response;
-                        $('#lista_itens tbody').empty();
+        var index = 0;
+        var tbody = document.getElementById("tbody");
 
-                        data.forEach(item => {
-                            setInterval(() => {
-                                $('#lista_itens tbody').append('<tr><td>' + item[0] + '</td><td>' + item[1] + '</td></tr>');
-                                pagina_atual++;
-                                atualizarLista(pagina_atual);
-                            }, 2000);
-                        });
+        function renderizarProximoDado() {
+          if (index < dados.length) {
+            var newRow = document.createElement("tr");
+            var cell1 = document.createElement("td");
+            var cell2 = document.createElement("td");
 
-                    })
-                    .catch(error => console.error('Erro ao obter itens:', error));
-            }
+            cell1.innerHTML = dados[index][0];
+            cell2.innerHTML = dados[index][1];
 
-            atualizarLista(pagina_atual);
-        });**/
+            newRow.appendChild(cell1);
+            newRow.appendChild(cell2);
 
-        async function updateList(page = 1) {
-            $('#lista_itens tbody').empty();
-            try {
-                const request = await fetch('/dashboard/dados?page=' + page);
-                const response = await request.json();
+            tbody.appendChild(newRow);
 
-                if (!response || response.length === 0) {
-                    console.log("Nenhum dado encontrado!");
-                    return;
-                }
+            index++;
 
-                const items = response;
-                let index = 0;
-
-                const intervalId = setInterval(() => {
-                    if (index < items.length) {
-                        renderNextItem(items[index]);
-                        index++;
-                    } else {
-                        clearInterval(intervalId);
-                    }
-                }, 3000);
-            } catch (error) {
-                console.error(error);
-            }
+            setTimeout(renderizarProximoDado, 2000);
+          }
         }
 
-        function renderNextItem(item) {
-            $('#lista_itens tbody').append('<tr><td>' + item[0] + '</td><td>' + item[1] + '</td></tr>');
-        }
-
-        updateList();
-    </script>
-
-
-    <script>
-        /**$(document).ready(function () {
-            $.get('', function (data) {
-                console.log(data)
-            })
-        })**/
-    </script>
+        renderizarProximoDado();
+      });
+      
+  </script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
-        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
-        crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-        var socket = io()
-
-        // client-side
-        socket.on("connect", () => {
-            console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-        });
-
-        socket.on("disconnect", () => {
-            console.log(socket.id); // undefined
-        });
-
-        socket.on("connect", () => {
-            console.log(socket.connected); // true
-        });
-
-        socket.on("disconnect", () => {
-            console.log(socket.connected); // false
-        });
-
-        socket.on('update_ml_logs', function (data) {
-            var logDiv = document.createElement('div');
-            logDiv.innerText = data;
-            document.getElementById('ml_logs').appendChild(logDiv);
-        });
-
-        socket.on('lora_logs', function (data) {
-            var logs_direct = document.getElementById('logs_direct');
-            var lora_logs = document.createElement('li');
-            lora_logs.textContent = data['lora_logs'];
-            logs_direct.appendChild(lora_logs);
-        });
-
-        socket.on('update_alert', function (alert) {
-            var alertIcon = document.getElementById('alert_icon');
-            if (alert) {
-                alertIcon.classList.remove('hidden');
-            } else {
-                alertIcon.classList.add('hidden');
-            }
-        });
-    </script>
-</body>
+      integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+      crossorigin="anonymous"></script>
+  </body>
 
 </html>

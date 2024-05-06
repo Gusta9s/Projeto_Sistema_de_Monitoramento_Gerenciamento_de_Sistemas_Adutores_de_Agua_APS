@@ -1,23 +1,30 @@
+from realiza_leitura_x import realiza_leitura_encaminha
+from realiza_leitura_y import realiza_leitura_y
+
 class Dados:
     
-    def __init__(self, peso, velocidade, extensao):
-        self.peso = peso
+    def __init__(self, velocidade, excesso):
         self.velocidade = velocidade
-        self.extensao = extensao
-        self.array_peso = []
+        self.excesso = excesso
         self.array_velocidade = []
-        self.array_extensao = []
-        self.adiciona_peso(self.peso)
-        self.adiciona_velocidade(self.velocidade)
-        self.adiciona_extensao(self.extensao)
+        self.array_excesso = []
 
-    def adiciona_peso(self, valor):
-        self.array_peso.append(valor)
+    def adiciona_velocidade(self):
+        self.array_velocidade.append(self.velocidade)
 
-    def adiciona_velocidade(self, valor):
-        self.array_velocidade.append(valor)
+    def adiciona_excesso(self):
+        self.array_excesso.append(self.excesso)
 
-    def adiciona_extensao(self, valor):
-        self.array_extensao.append(valor)
+def realiza_criacao_objeto():
+    dataframe_x = realiza_leitura_encaminha()
+    dataframe_y = realiza_leitura_y()
 
+    list_x = dataframe_x['Value'].values.tolist()
+    list_y = dataframe_y['Value'].values.tolist()
+
+    dados_x = Dados(velocidade=list_x, excesso=list_y)
+    dados_x.adiciona_velocidade()
+    dados_x.adiciona_excesso()
+
+    return dados_x
     
