@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 from getLora import realiza_leitura_encaminha
+from machineLearning import realiza_aprendizado_supervisionado
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -27,4 +28,6 @@ def create_app(config):
     def dashboard_view():
         dados = realiza_leitura_encaminha()
         array_dados = dados.values.tolist()
-        return render_template('painel.html', dados=array_dados)
+        machine_learning_dados, acuracia = realiza_aprendizado_supervisionado()
+        array_machine_learning = machine_learning_dados.tolist()
+        return render_template('painel.html', dados=array_dados, array_machine_learning=array_machine_learning, acuracia=acuracia)

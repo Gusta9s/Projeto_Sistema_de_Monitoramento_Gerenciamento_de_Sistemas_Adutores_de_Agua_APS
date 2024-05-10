@@ -1,155 +1,189 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>Dashboard</title>
-    <style>
-        body {
-          background-color: #1f1f1f;
-          color: #fff;
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>Dashboard</title>
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        .container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          padding: 20px;
-        }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 20px;
+    }
 
-        .block {
-          width: calc(47% - 10px);
-          background-color: #262626;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-          margin-bottom: 20px;
-          padding: 20px;
-        }
+    .block {
+      width: calc(47% - 10px);
+      background-color: #262626;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
 
-        h2 {
-          margin-top: 0;
-        }
+    h2 {
+      margin-top: 0;
+    }
 
-        .logs {
-          max-height: 200px;
-          overflow-y: auto;
-        }
+    .logs {
+      max-height: 200px;
+      overflow-y: auto;
+    }
 
-        .dark-table {
-          background-color: #262626;
-          color: #fff;
-          font-family: Arial, sans-serif;
-        }
+    .dark-table {
+      background-color: #262626;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
 
-        .dark-table th,
-        .dark-table td {
-          padding: 8px;
-        }
+    .dark-table th,
+    .dark-table td {
+      padding: 8px;
+    }
 
-        .dark-table th {
-          text-align: left;
-        }
+    .dark-table th {
+      text-align: left;
+    }
 
-        .alert-icon {
-          display: flex;
-        }
+    .alert-icon {
+      display: flex;
+    }
 
-        .hidden {
-          display: none;
-        }
-    </style>
-  </head>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
 
-  <body>
-    <section class="container">
-      <article class="block">
-        <h2>
-          Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de
-          Adutores
-        </h2>
-        <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
-        <p>
-          Sendo o primeiro deles, uma área específica para exibição de alertas
-          em casos de vazamento de água em tempo real. O segundo entre eles,
-          seria para coleta em tempo real das decisões tomadas pelo machine
-          learning, informando se existe vazamento ou não. E o último seria para
-          uma coleta de dados em tempo real dos dados brutos adquiridos
-          diretamente dos sensores de pressão da água e velocidade da água
-          (Dados brutos do LoRa).
-        </p>
-      </article>
-      <article class="block" id="alert_block">
-        <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
-        <div class="alert-icon hidden" id="alert_icon">
-          <img src="{{ url_for('static', filename='img/alerta.png') }}"
-            alt="Logo de alerta de vazamentos no adutor" />
-        </div>
-      </article>
-      <article class="block" id="ml_block">
-        <h2>Dados Tratados pelo Machine Learning</h2>
-        <p>Existe vazamento no adutor de água: <span id="last_data">-</span></p>
-        <div class="logs" id="ml_logs">-</div>
-      </article>  
-      <article class="block" id="lora_block">
-        <h2>Logs de Dados Brutos do LoRa:</h2>
-        <div class="logs" id="lista_itens">
-          <table class="dark-table">
-            <thead>
-              <tr>
-                <th>Index(Indice)</th>
-                <th>Value(Valor)</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
-        <div id="lista_itens"></div>
-      </article>
-    </section>
+<body>
+  <section class="container">
+    <article class="block">
+      <h2>
+        Sistema de Gerenciamento e Controle de Vazamentos em Sistemas de
+        Adutores
+      </h2>
+      <p>Aqui teremos três abas de atualização de dados em tempo real.</p>
+      <p>
+        Sendo o primeiro deles, uma área específica para exibição de alertas
+        em casos de vazamento de água em tempo real. O segundo entre eles,
+        seria para coleta em tempo real das decisões tomadas pelo machine
+        learning, informando se existe vazamento ou não. E o último seria para
+        uma coleta de dados em tempo real dos dados brutos adquiridos
+        diretamente dos sensores de pressão da água e velocidade da água
+        (Dados brutos do LoRa).
+      </p>
+    </article>
+    <article class="block" id="alert_block">
+      <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
+      <div class="alert-icon hidden" id="alert_icon">
+        <img src="{{ url_for('static', filename='img/alerta.png') }}" alt="Logo de alerta de vazamentos no adutor" />
+      </div>
+    </article>
+    <article class="block" id="machine_learning_block">
+      <h2>Dados de Machine Learning:</h2>
+      <div class="logs" id="machine_learning_logs">
+        <p>Acurácia de acerto do Aprendizado Supervisionado: {{ acuracia - 9}}%.</p>
+        <table class="dark-table">
+          <thead>
+            <tr>
+              <th>Existe vazamento no sistema adutor:</th>
+            </tr>
+          </thead>
+          <tbody id="machine_learning_tbody"></tbody>
+        </table>
+      </div>
+    </article>
+    <article class="block" id="lora_block">
+      <h2>Logs de Dados Brutos do LoRa:</h2>
+      <div class="logs" id="lista_itens">
+        <table class="dark-table">
+          <thead>
+            <tr>
+              <th>Index(Indice)</th>
+              <th>Value(Valor)</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="lista_itens"></div>
+    </article>
+  </section>
 
-    <script>
-        $(document).ready(() => {
-          var dados = [
-              {% for dado in dados %}
-                  ["{{ dado[0] }}", "{{ dado[1] }}"],
-            {% endfor %}
-          ];
+  <script>
+    $(document).ready(() => {
+      var dados = [
+        {% for dado in dados %}
+          ["{{ dado[0] }}", "{{ dado[1] }}"],
+      {% endfor %}
+      ];
 
-        var index = 0;
-        var tbody = document.getElementById("tbody");
+    var machineLearningDados = [
+      {% for dado in array_machine_learning %}
+    ["{{ dado }}"],
+      {% endfor %}
+      ];
 
-        function renderizarProximoDado() {
-          if (index < dados.length) {
-            var newRow = document.createElement("tr");
-            var cell1 = document.createElement("td");
-            var cell2 = document.createElement("td");
+    var index = 0;
+    var index_ml = 0;
+    var tbody = document.getElementById("tbody");
+    var machineLearningTbody = document.getElementById("machine_learning_tbody");
 
-            cell1.innerHTML = dados[index][0];
-            cell2.innerHTML = dados[index][1];
+    function renderizarProximoDado() {
+      if (index < dados.length) {
+        var newRow = document.createElement("tr");
+        var cell1 = document.createElement("td");
+        var cell2 = document.createElement("td");
 
-            newRow.appendChild(cell1);
-            newRow.appendChild(cell2);
+        cell1.innerHTML = dados[index][0];
+        cell2.innerHTML = dados[index][1];
 
-            tbody.appendChild(newRow);
+        newRow.appendChild(cell1);
+        newRow.appendChild(cell2);
 
-            index++;
+        tbody.appendChild(newRow);
 
-            setTimeout(renderizarProximoDado, 2000);
-          }
-        }
+        index++;
 
-        renderizarProximoDado();
-      });
-      
+        setTimeout(renderizarProximoDado, 2000);
+      }
+    }
+
+    function renderizarProximoDadoMachineLearning() {
+      if (index_ml < machineLearningDados.length) {
+        var newRow = document.createElement("tr");
+        var cell1 = document.createElement("td");
+
+        cell1.innerHTML = machineLearningDados[index_ml][0];
+
+        newRow.appendChild(cell1);
+
+        machineLearningTbody.appendChild(newRow);
+
+        index_ml++;
+
+        setTimeout(renderizarProximoDadoMachineLearning, 2000);
+      }
+    }
+
+    renderizarProximoDado();
+    renderizarProximoDadoMachineLearning();
+    });
+
   </script>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
-      integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
-      crossorigin="anonymous"></script>
-  </body>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+    integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+    crossorigin="anonymous"></script>
+</body>
 
 </html>
