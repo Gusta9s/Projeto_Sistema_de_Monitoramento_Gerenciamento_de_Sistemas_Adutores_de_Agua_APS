@@ -1,0 +1,91 @@
+<!--  Resumo da funcionalidade desta interface: Ela é um inicializador de coleta em tempo real dos dados, um gatilho para que a aplicação inicie seus processos de coleta em tempo real dos dados. O <style> possui as estilizações da nossa página em tempo de execução. O <body> possui o gatilho para encaminhamento do servidor ao endpoint /dashboard que inicia a coleta em tempo real dos dados e aplica a formatação da imagem extraída do Flask.-->
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        body>img {
+            max-width: 100%;
+            max-height: 70%;
+            transform: scale(4);
+            object-fit: cover;
+            position: absolute;
+            z-index: -1;
+        }
+
+        main {
+            text-align: center;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            border: 1px;
+            border-radius: 10px;
+            border-color: rgba(0.2, 0.2, 0.2, 0.2);
+            background-color: black;
+        }
+
+        main > section > article > h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 25px;
+        }
+
+        main > section > article > p {
+            font-size: 15px;
+            margin-bottom: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .start-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #005fc5;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .start-button:hover {
+            background-color: #c39f00;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Codigo Flask para exibicao da imagem em tempo real.-->
+    <img src="{{ url_for('static', filename='img/fundo01.jpg') }}" alt="Logo de fundo baseado em sistemas de grafos tridimensionais">
+    <main>
+        <section>
+            <article>
+                <h1>Bem-vindo ào Sistema de Gerenciamento e Controle de Vazamentos para Sistemas de Adutores</h1>
+                <p>A aplicacao se baseia no monitoramento de pressao de agua em tempo real, para notificacao ao usuario
+                    de possiveis vazamentos em seu sistema de adutor de agua potavel. Clique no botão abaixo para
+                    começar!</p>
+                <a href="/dashboard" class="start-button">Começar</a>
+            </article>
+        </section>
+    </main>
+</body>
+
+</html>
