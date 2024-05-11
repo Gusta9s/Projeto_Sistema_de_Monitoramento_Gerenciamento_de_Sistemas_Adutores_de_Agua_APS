@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <title>Dashboard</title>
+  <!-- Parte onde ficará nossa estilização da interface.-->
   <style>
     body {
       background-color: #1f1f1f;
@@ -65,6 +66,7 @@
   </style>
 </head>
 
+<!-- Parte onde fica nossa interface de coleta em tempo real dos dados e informações do sistema.-->
 <body>
   <section class="container">
     <article class="block">
@@ -86,13 +88,13 @@
     <article class="block" id="alert_block">
       <h2>Área de exibicão de alertas, em casos de vazamentos:</h2>
       <div class="alert-icon hidden" id="alert_icon">
+        <!-- Código Flask para exibição da imagem em tempo real.-->
         <img src="{{ url_for('static', filename='img/alerta.png') }}" alt="Logo de alerta de vazamentos no adutor" />
       </div>
     </article>
     <article class="block" id="machine_learning_block">
       <h2>Dados de Machine Learning:</h2>
       <div class="logs" id="machine_learning_logs">
-        <p>Acurácia de acerto do Aprendizado Supervisionado: {{ acuracia - 9}}%.</p>
         <table class="dark-table">
           <thead>
             <tr>
@@ -100,6 +102,7 @@
             </tr>
           </thead>
           <tbody id="machine_learning_tbody"></tbody>
+          <!-- Parte onde ficam os dados em tempo real, sendo exibidos para o usuário em tempo de execução. Neste caso os dados são das tomadas de decisão do Machine Learning.-->
         </table>
       </div>
     </article>
@@ -117,10 +120,12 @@
         </table>
       </div>
       <div id="lista_itens"></div>
+      <!-- Parte onde ficam os dados em tempo real, sendo exibidos para o usuário em tempo de execução. Neste caso os dados são da coleta em tempo real dos dados brutos que vêm do LoRa para o usuário.-->
     </article>
   </section>
 
   <script>
+    // Método que realiza o agrupamento dos dados vindos do servidor para o cliente, tanto do LoRa, quanto do Machine Learning.
     $(document).ready(() => {
       var dados = [
         {% for dado in dados %}
@@ -134,56 +139,90 @@
       {% endfor %}
       ];
 
+      // Inclusão de um contador, tanto para o LoRa quanto para o Machine Learning.
     var index = 0;
     var index_ml = 0;
+
+      // Mapeia os IDs dos componentes HTML da interface, encarregados de realizar a inclusão dos dados em tempo real. 
     var tbody = document.getElementById("tbody");
     var machineLearningTbody = document.getElementById("machine_learning_tbody");
 
+      // Método responsável pela inclusão dos dados em tempo real do LoRa.
     function renderizarProximoDado() {
       if (index < dados.length) {
+
+          // newRow cria um elemento <tr> para interface HTML do LoRa.
         var newRow = document.createElement("tr");
+
+          // cell1 e cell2 criam elementos <td> para interface HTML do LoRa, onde os dados serão incluídos. 
         var cell1 = document.createElement("td");
         var cell2 = document.createElement("td");
 
+          // Realiza a inclusão do registro atual do Array, tanto para o segundo correspondente quanto para o valor em si...
         cell1.innerHTML = dados[index][0];
         cell2.innerHTML = dados[index][1];
 
+          // Realiza a inclusão dos dados contidos nas colunas, para dentro da linha atual. 
         newRow.appendChild(cell1);
         newRow.appendChild(cell2);
 
+          // Realiza a inclusão da linha com dados contidos, para dentro da tabela com as colunas.
         tbody.appendChild(newRow);
 
+          // Acrescenta um "mais um" ao contador para buscar o novo registro atual.
         index++;
 
+          // A cada dois segundos ele busca um novo registro em tempo real, e inclui ele para dentro do método. 
         setTimeout(renderizarProximoDado, 2000);
       }
     }
 
+      // Método responsável pela inclusão dos dados em tempo real do Machine Learning.
     function renderizarProximoDadoMachineLearning() {
       if (index_ml < machineLearningDados.length) {
+
+        // newRow cria um elemento <tr> para interface HTML do Machine Learning.
         var newRow = document.createElement("tr");
+
+        // cell1 cria um elemento <td> para interface HTML do Machine Learning, onde os dados serão incluídos. 
         var cell1 = document.createElement("td");
 
-        cell1.innerHTML = machineLearningDados[index_ml][0];
+        // prediction realiza a coleta dos dados vindos do servidor para a interface, conforme o seu índice.
+        var prediction = machineLearningDados[index_ml][0];
 
+        // Inclui na coluna o dado obtido através do prediction. 
+        cell1.innerHTML = prediction;
+
+        // Realiza a inclusão dos dados contidos na coluna, para dentro da linha atual. 
         newRow.appendChild(cell1);
 
+        // Realiza a inclusão da linha com dados obtidos, para dentro da tabela com a coluna.
         machineLearningTbody.appendChild(newRow);
 
+        // Seleciona o elemento da imagem
+        var alertIcon = document.getElementById("alert_icon");
+
+        // Remove a classe hidden se a previsão for "Sim"
+        if (prediction === "Sim") {
+          alertIcon.classList.remove("hidden");
+        } else {
+          // Adiciona a classe hidden se a previsão for "Não"
+          alertIcon.classList.add("hidden");
+        }
+
+        // Adiciona o "mais um" ao contador para busca de um novo registro.
         index_ml++;
 
+        // Ao se passar dois segundos, o servidor busca um novo registro para inclusão.
         setTimeout(renderizarProximoDadoMachineLearning, 2000);
       }
     }
 
+    // Realiza as chamadas ao sistema, tanto para o LoRa quanto para o Machine Learning.
     renderizarProximoDado();
     renderizarProximoDadoMachineLearning();
     });
 
   </script>
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
-    integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
-    crossorigin="anonymous"></script>
 </body>
-
 </html>

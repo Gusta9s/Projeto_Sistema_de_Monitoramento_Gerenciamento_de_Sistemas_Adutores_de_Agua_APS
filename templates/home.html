@@ -1,3 +1,4 @@
+<!--  Resumo da funcionalidade desta interface: Ela é um inicializador de coleta em tempo real dos dados, um gatilho para que a aplicação inicie seus processos de coleta em tempo real dos dados. O <style> possui as estilizações da nossa página em tempo de execução. O <body> possui o gatilho para encaminhamento do servidor ao endpoint /dashboard que inicia a coleta em tempo real dos dados e aplica a formatação da imagem extraída do Flask.-->
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -72,6 +73,7 @@
 </head>
 
 <body>
+    <!-- Codigo Flask para exibicao da imagem em tempo real.-->
     <img src="{{ url_for('static', filename='img/fundo01.jpg') }}" alt="Logo de fundo baseado em sistemas de grafos tridimensionais">
     <main>
         <section>
