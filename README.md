@@ -24,11 +24,6 @@ O pipeline funciona de ponta a ponta: os dados brutos dos três nós de sensores
 4. **Classificação**: um modelo SVC treinado a cada execução prevê se o padrão de leitura atual indica vazamento.
 5. **Exibição**: o servidor Flask, com Flask-SocketIO, envia os dados brutos e a decisão do modelo para o dashboard, atualizado em tempo real.
 
-## Segredos e configuração
-
-- O arquivo config.py centraliza variáveis de ambiente (host, porta, ambiente de execução) e uma chave de aplicação usada pelo Flask — em um cenário de produção, essa chave deve ser gerada de forma segura e fornecida via variável de ambiente, nunca versionada no código-fonte.
-- Os caminhos dos arquivos CSV de leitura dos sensores são referenciados localmente no código; em uma implantação real, esses caminhos devem ser parametrizados (variável de ambiente ou arquivo de configuração) em vez de fixos no código-fonte.
-
 ## Como executar
 
 ```bash
