@@ -1,12 +1,18 @@
 # Importação da biblioteca pandas para realizar a criação do DataFrame para o tratamento do Machine Learning.
 import pandas as pd
 
+# Importação da biblioteca de sistema operacional para localizarmos a pasta data/ na raiz do projeto.
+import os
+
+# Diretório da pasta data/ na raiz do projeto, um nível acima da pasta src/.
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
+
 def realiza_leitura_y():
 
     # Realiza a extração dos dados salvos em arquivos do LoRa de coleta em tempo real de pressão de água vinda dos sensores.
-    arquivo4 = r'C:\Users\Gustavo\Downloads\Projeto_APS\data\Node_2.csv'
-    arquivo5 = r'C:\Users\Gustavo\Downloads\Projeto_APS\data\Node_9.csv'
-    arquivo6 = r'C:\Users\Gustavo\Downloads\Projeto_APS\data\Node_10.csv'
+    arquivo4 = os.path.join(DATA_DIR, 'Node_2.csv')
+    arquivo5 = os.path.join(DATA_DIR, 'Node_9.csv')
+    arquivo6 = os.path.join(DATA_DIR, 'Node_10.csv')
 
     # Realiza a conversão dos arquivos em formato CSV salvos pelo LoRa para um array do tipo DataFrame pandas.
     dataframe1 = pd.read_csv(arquivo4, names=['Index', 'Value'])
@@ -14,9 +20,9 @@ def realiza_leitura_y():
     dataframe3 = pd.read_csv(arquivo6, names=['Index', 'Value'])
 
     # Remove a coluna "Index" dos DataFrames.
-    dataframe1 = dataframe1.drop(columns=["Index"], axis=1)
-    dataframe2 = dataframe2.drop(columns=["Index"], axis=1)
-    dataframe3 = dataframe3.drop(columns=["Index"], axis=1)
+    dataframe1 = dataframe1.drop(columns=["Index"])
+    dataframe2 = dataframe2.drop(columns=["Index"])
+    dataframe3 = dataframe3.drop(columns=["Index"])
 
     # Concatena as novas chegadas de dados em tempo real salvas em arquivos CSV diferentes do LoRa, para um único DataFrame contendo todas as informações/registros dos dados.
     dataframe_concatenado = pd.concat([dataframe1, dataframe2, dataframe3], ignore_index=True)

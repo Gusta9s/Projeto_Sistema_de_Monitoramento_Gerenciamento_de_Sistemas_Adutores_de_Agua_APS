@@ -1,6 +1,6 @@
 # Importamos os módulos de extração dos dados de coleta em tempo real do LoRa para nossas features de aprendizado supervisionado.
-from realiza_leitura_x import realiza_leitura_encaminha
-from realiza_leitura_y import realiza_leitura_y
+from src.realiza_leitura_x import realiza_leitura_encaminha
+from src.realiza_leitura_y import realiza_leitura_y
 
 class Dados:
     

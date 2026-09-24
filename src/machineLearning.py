@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # Importamos o modelo do arquivo model.py para realizarmos a instância do Objeto "__init__" para nosso aprendizado supervisionado.
-from model import realiza_criacao_objeto
+from src.model import realiza_criacao_objeto
 
 
 # Este método realiza a conversão de dados dinâmicos para dados estáticos, com base na regra de negócio dos adutores de água. Neste caso para nossa feature de velocidade por segundo da água no adutor.

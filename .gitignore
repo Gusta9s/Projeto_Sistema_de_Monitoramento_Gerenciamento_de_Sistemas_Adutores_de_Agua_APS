@@ -1,0 +1,116 @@
+# === Byte-compiled / cache ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# === Distribution / packaging ===
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
+wheels/
+pip-wheel-metadata/
+
+# === Virtual environments ===
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# === Environment / secrets ===
+.env
+.env.*
+*.pem
+*.key
+secrets.yaml
+credentials.json
+
+# === Testing / coverage ===
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+nosetests.xml
+
+# === Type checking / linting ===
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+.pyre/
+
+# === Jupyter Notebook ===
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Data files (pandas/numpy) ===
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.npy
+*.npz
+data/
+datasets/
+raw_data/
+
+# === Machine Learning models (sklearn) ===
+*.joblib
+*.sav
+*.model
+*.onnx
+
+# === Logs ===
+*.log
+logs/
+
+# === MLOps / experiment tracking ===
+mlruns/
+mlartifacts/
+wandb/
+.dvc/
+.dvcignore
+
+# === Databases ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === Compiled outputs ===
+*.pyd
+*.dll
+*.exe
+
+# === Temp files ===
+*.tmp
+*.bak
+*.orig
+
+# === Manter pastas vazias versionadas ===
+!.gitkeep

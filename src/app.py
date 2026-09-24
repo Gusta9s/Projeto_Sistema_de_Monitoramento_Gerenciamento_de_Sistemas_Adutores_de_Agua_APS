@@ -5,13 +5,23 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 
 # Importando o módulo de extração dos dados vindos dos sensores de pressão e velocidade do adutor de água.
-from getLora import realiza_leitura_encaminha
+from src.getLora import realiza_leitura_encaminha
 
 # Importando o módulo de aprendizado supervisionado dos dados vindos dos sensores.
-from machineLearning import realiza_aprendizado_supervisionado
+from src.machineLearning import realiza_aprendizado_supervisionado
 
-# Instância do servidor no contexto da aplicação.
-app = Flask(__name__)
+# Importação da biblioteca de sistema operacional para localizarmos os diretórios de templates/static na raiz do projeto.
+import os
+
+# Diretório raiz do projeto, um nível acima da pasta src/.
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Instância do servidor no contexto da aplicação, apontando para as pastas templates/static na raiz do projeto.
+app = Flask(
+    __name__,
+    template_folder=os.path.join(ROOT_DIR, 'templates'),
+    static_folder=os.path.join(ROOT_DIR, 'static')
+)
 
 # Instância da biblioteca de coleta em tempo real dos dados vindos dos sensores.
 socketio = SocketIO(app)

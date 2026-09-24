@@ -27,25 +27,40 @@ O pipeline funciona de ponta a ponta: os dados brutos dos três nós de sensores
 ## Como executar
 
 ```bash
-pip install flask flask-socketio pandas numpy scikit-learn
+pip install -r requirements.txt
 python run.py
 ```
 
 Por padrão, a aplicação sobe em modo de desenvolvimento (FLASK_ENV não definido) e o dashboard fica disponível na rota /dashboard.
 
+### Secret da aplicação
+
+A aplicação possui uma configuração `SECRET` (`src/config.py`) que **não é hardcoded nem versionada** no repositório. Ela deve ser informada por parâmetro de linha de comando ao iniciar o servidor:
+
+```bash
+python run.py --secret "<valor-da-secret>"
+```
+
+Se `--secret` não for informado, a aplicação sobe normalmente com `SECRET = None` — o parâmetro não é obrigatório para o funcionamento local do dashboard, mas deve ser definido com um valor próprio (não compartilhado publicamente) em qualquer ambiente exposto além do localhost.
+
 ## Estrutura do projeto
 
 ```
 .
-├── app.py                    # Aplicação Flask + Flask-SocketIO e definição das rotas
 ├── run.py                    # Ponto de entrada: carrega a configuração e inicia o servidor
-├── config.py                 # Configurações de ambiente (dev/prod)
-├── getLora.py                # Leitura e concatenação dos dados brutos dos sensores (LoRa)
-├── realiza_leitura_x.py      # Leitura da feature de velocidade da água
-├── realiza_leitura_y.py      # Leitura da feature de pressão da água
-├── model.py                  # Classe de domínio que organiza os dados para o aprendizado supervisionado
-├── machineLearning.py        # Treinamento do modelo SVC e tomada de decisão (vazamento ou não)
+├── src/                       # Código-fonte da aplicação
+│   ├── app.py                 # Aplicação Flask + Flask-SocketIO e definição das rotas
+│   ├── config.py               # Configurações de ambiente (dev/prod)
+│   ├── getLora.py               # Leitura e concatenação dos dados brutos dos sensores (LoRa)
+│   ├── realiza_leitura_x.py     # Leitura da feature de velocidade da água
+│   ├── realiza_leitura_y.py     # Leitura da feature de pressão da água
+│   ├── model.py                 # Classe de domínio que organiza os dados para o aprendizado supervisionado
+│   └── machineLearning.py       # Treinamento do modelo SVC e tomada de decisão (vazamento ou não)
 ├── data/                     # Arquivos CSV com as leituras dos sensores
+├── models/                   # Modelos de aprendizado supervisionado persistidos (quando aplicável)
+├── tests/                    # Testes automatizados do projeto
+├── notebooks/                # Notebooks de exploração e análise dos dados
+├── docs/                     # Documentação complementar do projeto
 ├── templates/                # Páginas HTML (página inicial e dashboard em tempo real)
 └── static/img/                # Imagens usadas na interface (ex.: ícone de alerta)
 ```

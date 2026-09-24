@@ -4,9 +4,14 @@ import os
 # Instanciamos nossas variáveis de ambiente essenciais para bom funcionamento no ambiente local, quanto de produção.
 class Config():
     CSRF_ENABLE = True
-    TEMPLATE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Diretório raiz do projeto, um nível acima da pasta src/ onde este arquivo está localizado.
+    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    TEMPLATE_FOLDER = os.path.join(ROOT_DIR, 'templates')
     APP = None
+    # Chave secreta da aplicação. Não é definida aqui: run.py a recebe via parâmetro de linha de
+    # comando (--secret) e a atribui a esta classe antes de create_app() ser chamado, para que o
+    # valor nunca fique hardcoded ou versionado no código-fonte.
+    SECRET = None
 
 # Instância das variáveis de ambiente do ambiente local/desenvolvimento.
 class Dev(Config):
